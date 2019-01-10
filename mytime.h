@@ -9,29 +9,25 @@
 
 using namespace std;
 
-
-
-
 class mytime
 {
 public:
-    mytime();
-    bool setyear(int);
-    bool setmd(int);
-    bool sethm(int);
-    bool gethm();
-    void show();
-    void setup();
+	mytime();
+	bool setyear(int);
+	bool setmd(int);
+	bool sethm(int);
+	bool gethm();
+	void show();
+	void setup();
 private:
-    int year;
-    int md;//月份和日期
-    int hm;//小时和分钟
-    int SERpin;
-    int SCKpin;
-    int RCKpin;
-    bool mytime_state;
-    void outnum(int);
+	int year;
+	int md;//月份和日期
+	int hm;//小时和分钟
+	int SERpin;
+	int SCKpin;
+	int RCKpin;
+	bool mytime_state;
+	void outnum(int);
 };
-
 
 #endif
