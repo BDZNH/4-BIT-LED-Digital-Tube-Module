@@ -3,10 +3,14 @@
 #include <iostream>
 #include <cstdlib>
 
+extern bool mytime_state;
+
 int main()
 {
 	mytime mTime;
-
+	mytime_state=true;
+	std::thread th(show,std::ref(mTime));
+	th.detach();
 	int year, md, hm;
 	time_t tt;
 	time(&tt);
@@ -18,7 +22,7 @@ int main()
 	mTime.setyear(year);
 	mTime.setmd(md);
 	mTime.sethm(hm);
-	mTime.show();
+	//mTime.show();
 	while (true)
 	{
 		time(&tt);
@@ -39,9 +43,10 @@ int main()
 			mTime.setyear(year);
 			mTime.setmd(md);
 			mTime.sethm(hm);
-			mTime.show();
 		}
-		//delay(800);
-
+		delay(800);
 	}
+	mytime_state=false;
+	delay(1000);
+	return 0;
 }

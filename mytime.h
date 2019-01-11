@@ -16,18 +16,21 @@ public:
 	bool setyear(int);
 	bool setmd(int);
 	bool sethm(int);
-	bool gethm();
-	void show();
+	int gethm();
+	int getyear();
+	int getmd();
 	void setup();
+	int DIOpin;
+	int SCLKpin;
+	int RCLKpin;
 private:
 	int year;
 	int md;//月份和日期
 	int hm;//小时和分钟
-	int SERpin;
-	int SCKpin;
-	int RCKpin;
-	bool mytime_state;
-	void outnum(int);
+	
 };
+
+void show(mytime &);
+void outnum(mytime &, int);
 
 #endif

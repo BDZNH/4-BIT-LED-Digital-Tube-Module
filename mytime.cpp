@@ -5,15 +5,16 @@ uint8_t LED_0F[17] =
 	0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90,0x8C,0xBF,0xC6,0xA1,0x86,0xFF,0xbf
 };
 
+bool mytime_state;
+
 mytime::mytime()
 {
 	year = 1900;
 	md = 101;
 	hm = 1;
-	mytime_state = true;
-	SERpin = 1;
-	SCKpin = 2;
-	RCKpin = 3;
+	DIOpin = 1;
+	SCLKpin = 2;
+	RCLKpin = 3;
 	setup();
 	//show();
 	// thread th(&mytime::show,this);
@@ -38,58 +39,20 @@ bool mytime::sethm(int hm)
 	return true;
 }
 
-bool mytime::gethm()
+
+int mytime::getyear()
+{
+	return year;
+}
+
+int mytime::gethm()
 {
 	return hm;
 }
 
-void mytime::show()
+int mytime::getmd()
 {
-	//while(mytime_state)
-	//{
-	outnum(year);
-	//delay(500);
-	outnum(md);
-	//delay(500);
-	outnum(hm);
-	//delay(500);
-//}
-}
-
-void mytime::outnum(int num)
-{
-	int x1 = num / 1000;
-	int x2 = (num / 100) % 10;
-	int x3 = (num / 10) % 10;
-	int x4 = num % 10;
-
-	for (int i = 0; i < 200; ++i)
-	{
-		shiftOut(SERpin, SCKpin, MSBFIRST, LED_0F[x1]);
-		shiftOut(SERpin, SCKpin, MSBFIRST, 0x08);
-		digitalWrite(RCKpin, LOW);
-		digitalWrite(RCKpin, HIGH);
-		delay(3);
-
-		shiftOut(SERpin, SCKpin, MSBFIRST, LED_0F[x2]);
-		shiftOut(SERpin, SCKpin, MSBFIRST, 0x04);
-		digitalWrite(RCKpin, LOW);
-		digitalWrite(RCKpin, HIGH);
-		delay(3);
-
-		shiftOut(SERpin, SCKpin, MSBFIRST, LED_0F[x3]);
-		shiftOut(SERpin, SCKpin, MSBFIRST, 0x02);
-		digitalWrite(RCKpin, LOW);
-		digitalWrite(RCKpin, HIGH);
-		delay(3);
-
-		shiftOut(SERpin, SCKpin, MSBFIRST, LED_0F[x4]);
-		shiftOut(SERpin, SCKpin, MSBFIRST, 0x01);
-		digitalWrite(RCKpin, LOW);
-		digitalWrite(RCKpin, HIGH);
-		delay(3);
-	}
-
+	return md;
 }
 
 void mytime::setup()
@@ -100,7 +63,56 @@ void mytime::setup()
 		exit(-1);
 	}
 
-	pinMode(SERpin, OUTPUT);
-	pinMode(RCKpin, OUTPUT);
-	pinMode(SCKpin, OUTPUT);
+	pinMode(DIOpin, OUTPUT);
+	pinMode(SCLKpin, OUTPUT);
+	pinMode(RCLKpin, OUTPUT);
+}
+
+
+void show(mytime &mTime)
+{
+	while(mytime_state)
+	{
+		outnum(mTime,mTime.getyear());
+		delay(3);
+		outnum(mTime,mTime.getmd());
+		delay(3);
+		outnum(mTime,mTime.gethm());
+		delay(3);
+	}
+}
+
+void outnum(mytime &mTime,int num)
+{
+	int x1 = num / 1000;
+	int x2 = (num / 100) % 10;
+	int x3 = (num / 10) % 10;
+	int x4 = num % 10;
+
+	for (int i = 0; i < 200; ++i)
+	{
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, LED_0F[x1]);
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, 0x08);
+		digitalWrite(mTime.RCLKpin, LOW);
+		digitalWrite(mTime.RCLKpin, HIGH);
+		delay(3);
+
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, LED_0F[x2]);
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, 0x04);
+		digitalWrite(mTime.RCLKpin, LOW);
+		digitalWrite(mTime.RCLKpin, HIGH);
+		delay(3);
+
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, LED_0F[x3]);
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, 0x02);
+		digitalWrite(mTime.RCLKpin, LOW);
+		digitalWrite(mTime.RCLKpin, HIGH);
+		delay(3);
+
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, LED_0F[x4]);
+		shiftOut(mTime.DIOpin, mTime.SCLKpin, MSBFIRST, 0x01);
+		digitalWrite(mTime.RCLKpin, LOW);
+		digitalWrite(mTime.RCLKpin, HIGH);
+		delay(3);
+	}
 }
