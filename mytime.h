@@ -24,9 +24,9 @@ public:
 	int SCLKpin;
 	int RCLKpin;
 private:
-	int year;
-	int md;//月份和日期
-	int hm;//小时和分钟
+	int year;		//年份
+	int md;			//月份和日期
+	int hm;			//小时和分钟
 	
 };
 

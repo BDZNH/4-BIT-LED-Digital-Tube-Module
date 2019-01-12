@@ -1,9 +1,8 @@
 #include "mytime.h"
 
 uint8_t LED_0F[17] =
-{ //  0   1     2    3    4    5    6    7    8    9    A   B    C    D    E    F    -
-	0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90,0x8C,0xBF,0xC6,0xA1,0x86,0xFF,0xbf
-};
+	{ //  0   1     2    3    4    5    6    7    8    9    A   B    C    D    E    F    -
+		0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90, 0x8C, 0xBF, 0xC6, 0xA1, 0x86, 0xFF, 0xbf};
 
 bool mytime_state;
 
@@ -16,29 +15,37 @@ mytime::mytime()
 	SCLKpin = 2;
 	RCLKpin = 3;
 	setup();
-	//show();
-	// thread th(&mytime::show,this);
-	// th.detach();
 }
 
 bool mytime::setyear(int year)
 {
+	if (year < 1900)
+	{
+		return false;
+	}
 	this->year = year;
 	return true;
 }
 
 bool mytime::setmd(int md)
 {
+	if (md < 101)
+	{
+		return false;
+	}
 	this->md = md;
 	return true;
 }
 
 bool mytime::sethm(int hm)
 {
+	if (hm < 1)
+	{
+		return false;
+	}
 	this->hm = hm;
 	return true;
 }
-
 
 int mytime::getyear()
 {
@@ -68,21 +75,21 @@ void mytime::setup()
 	pinMode(RCLKpin, OUTPUT);
 }
 
-
 void show(mytime &mTime)
 {
-	while(mytime_state)
+	while (mytime_state)
 	{
-		outnum(mTime,mTime.getyear());
+		outnum(mTime, mTime.getyear());
 		delay(3);
-		outnum(mTime,mTime.getmd());
+		outnum(mTime, mTime.getmd());
 		delay(3);
-		outnum(mTime,mTime.gethm());
+		outnum(mTime, mTime.gethm());
 		delay(3);
 	}
+	std::cout << "See you!" << std::endl;
 }
 
-void outnum(mytime &mTime,int num)
+void outnum(mytime &mTime, int num)
 {
 	int x1 = num / 1000;
 	int x2 = (num / 100) % 10;
