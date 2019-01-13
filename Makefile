@@ -10,3 +10,7 @@ main.o: main.cpp
 
 mytime.o: mytime.cpp
 	g++ -Wall -fexceptions -O2 -std=c++11 -lwiringPi -lpthread -g -c mytime.cpp
+
+clean:
+	rm -rf *.o
+	rm -rf showtime
