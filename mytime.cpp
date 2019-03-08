@@ -6,14 +6,8 @@ uint8_t LED_0F[17] =
 
 bool mytime_state;
 
-mytime::mytime()
+mytime::mytime() : DIOpin(1), SCLKpin(2), RCLKpin(3), year(1900), md(101), hm(1)
 {
-	year = 1900;
-	md = 101;
-	hm = 1;
-	DIOpin = 1;
-	SCLKpin = 2;
-	RCLKpin = 3;
 	setup();
 }
 

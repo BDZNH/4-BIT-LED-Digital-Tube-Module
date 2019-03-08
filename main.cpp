@@ -13,6 +13,7 @@ int main()
 	th.detach();
 	int year, md, hm;
 	time_t tt;
+	tm *t;
 	while (true)
 	{
 		time(&tt);
