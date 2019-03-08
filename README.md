@@ -104,4 +104,5 @@
 ## 参考
 
 [1] 74HC595的讲解，很详细，推荐观看[https://www.bilibili.com/video/av10007630/?p=14](https://www.bilibili.com/video/av10007630/?p=14)
+
 [2] wiringPi 库的解说，也很详细，推荐收藏[https://www.cnblogs.com/lulipro/p/5992172.html](https://www.cnblogs.com/lulipro/p/5992172.html)
